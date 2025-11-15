@@ -104,7 +104,7 @@ final class MatchListViewController: BaseViewController {
     }
     
     private func setupNavigationBar() {
-        title = "Match Odds"
+        title = "LiveOdds"
         navigationController?.navigationBar.prefersLargeTitles = false
         
         // Create animation toggle button
@@ -293,13 +293,16 @@ final class MatchListViewController: BaseViewController {
     private func connectionIndicator(for state: ConnectionState) -> (UIImage?, UIColor) {
         switch state {
         case .disconnected:
+            title = "LiveOdds"
             return (UIImage(systemName: "wifi.slash"), .systemRed)
         case .connecting:
+            title = "LiveOdds"
             return (UIImage(systemName: "wifi.exclamationmark"), .systemOrange)
         case .connected:
+            title = "LiveOdds"
             return (UIImage(systemName: "wifi"), .systemGreen)
         case .reconnecting(let attempt):
-            title = "Match Odds (Reconnecting \(attempt)/5)"
+            title = "LiveOdds (Reconnecting \(attempt)/5)"
             return (UIImage(systemName: "arrow.clockwise"), .systemOrange)
         }
     }

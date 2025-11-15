@@ -74,21 +74,6 @@ mockStream.emitUpdate(update)
 ### 邊界情況測試
 - ✅ `testEmptyDataHandling` - 處理空數據
 
-## 運行測試
-
-### 使用 Xcode
-1. 選擇 `MatchOdd` scheme
-2. 按下 `Cmd + U` 運行所有測試
-3. 或者打開 Test Navigator (`Cmd + 6`) 運行特定測試
-
-### 使用命令行
-```bash
-# 運行所有測試
-xcodebuild test -project MatchOdd.xcodeproj -scheme MatchOdd -destination 'platform=iOS Simulator,name=iPhone 17'
-
-# 只運行 ViewModel 測試
-xcodebuild test -project MatchOdd.xcodeproj -scheme MatchOdd -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:MatchOddTests/MatchListViewModelTests
-```
 
 ## 測試覆蓋率
 
@@ -101,37 +86,5 @@ xcodebuild test -project MatchOdd.xcodeproj -scheme MatchOdd -destination 'platf
 - ✅ 數據排序邏輯
 - ✅ 邊界情況處理
 
-## Swift 6 兼容性
 
-所有測試代碼完全符合 Swift 6 要求：
-- Mock 對象使用 `@unchecked Sendable` 標記（測試環境下安全）
-- 測試方法使用 `@MainActor` 確保在主執行緒運行
-- 使用 `async/await` 處理非同步操作
-- 符合嚴格並發檢查
 
-## 新增測試
-
-新增測試時請遵循以下原則：
-1. 使用描述性的測試名稱（英文）
-2. 遵循 Given-When-Then 模式
-3. 一個測試只驗證一個行為
-4. 使用 `#expect()` 進行斷言
-5. 適當使用 `async/await` 處理非同步操作
-6. 確保測試之間相互獨立
-
-## 範例測試結構
-
-```swift
-@Test("描述測試目的")
-func testSomething() async throws {
-    // Given - 準備測試數據和狀態
-    mockRepository.matchesToReturn = [...]
-
-    // When - 執行被測試的操作
-    await sut.loadInitialData()
-
-    // Then - 驗證結果
-    #expect(sut.matches.count == 2)
-    #expect(sut.error == nil)
-}
-```

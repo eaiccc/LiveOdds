@@ -28,18 +28,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3B2BE26F2EC4DC4A001DCF63 /* MatchOdd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MatchOdd.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B2BE26F2EC4DC4A001DCF63 /* LiveOdds.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LiveOdds.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B2BE2852EC4DC5C001DCF63 /* MatchOddTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MatchOddTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B2BE28F2EC4DC5C001DCF63 /* MatchOddUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MatchOddUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		3B2BE2972EC4DC5C001DCF63 /* Exceptions for "MatchOdd" folder in "MatchOdd" target */ = {
+		3B2BE2972EC4DC5C001DCF63 /* Exceptions for "MatchOdd" folder in "LiveOdds" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 3B2BE26E2EC4DC4A001DCF63 /* MatchOdd */;
+			target = 3B2BE26E2EC4DC4A001DCF63 /* LiveOdds */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -47,7 +47,7 @@
 		3B2BE2712EC4DC4A001DCF63 /* MatchOdd */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				3B2BE2972EC4DC5C001DCF63 /* Exceptions for "MatchOdd" folder in "MatchOdd" target */,
+				3B2BE2972EC4DC5C001DCF63 /* Exceptions for "MatchOdd" folder in "LiveOdds" target */,
 			);
 			path = MatchOdd;
 			sourceTree = "<group>";
@@ -103,7 +103,7 @@
 		3B2BE2702EC4DC4A001DCF63 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3B2BE26F2EC4DC4A001DCF63 /* MatchOdd.app */,
+				3B2BE26F2EC4DC4A001DCF63 /* LiveOdds.app */,
 				3B2BE2852EC4DC5C001DCF63 /* MatchOddTests.xctest */,
 				3B2BE28F2EC4DC5C001DCF63 /* MatchOddUITests.xctest */,
 			);
@@ -113,9 +113,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3B2BE26E2EC4DC4A001DCF63 /* MatchOdd */ = {
+		3B2BE26E2EC4DC4A001DCF63 /* LiveOdds */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3B2BE2982EC4DC5C001DCF63 /* Build configuration list for PBXNativeTarget "MatchOdd" */;
+			buildConfigurationList = 3B2BE2982EC4DC5C001DCF63 /* Build configuration list for PBXNativeTarget "LiveOdds" */;
 			buildPhases = (
 				3B2BE26B2EC4DC4A001DCF63 /* Sources */,
 				3B2BE26C2EC4DC4A001DCF63 /* Frameworks */,
@@ -128,12 +128,12 @@
 			fileSystemSynchronizedGroups = (
 				3B2BE2712EC4DC4A001DCF63 /* MatchOdd */,
 			);
-			name = MatchOdd;
+			name = LiveOdds;
 			packageProductDependencies = (
 				3B2BE3582EC6106B001DCF63 /* SnapKit */,
 			);
 			productName = MatchOdd;
-			productReference = 3B2BE26F2EC4DC4A001DCF63 /* MatchOdd.app */;
+			productReference = 3B2BE26F2EC4DC4A001DCF63 /* LiveOdds.app */;
 			productType = "com.apple.product-type.application";
 		};
 		3B2BE2842EC4DC5C001DCF63 /* MatchOddTests */ = {
@@ -222,7 +222,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3B2BE26E2EC4DC4A001DCF63 /* MatchOdd */,
+				3B2BE26E2EC4DC4A001DCF63 /* LiveOdds */,
 				3B2BE2842EC4DC5C001DCF63 /* MatchOddTests */,
 				3B2BE28E2EC4DC5C001DCF63 /* MatchOddUITests */,
 			);
@@ -280,12 +280,12 @@
 /* Begin PBXTargetDependency section */
 		3B2BE2872EC4DC5C001DCF63 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3B2BE26E2EC4DC4A001DCF63 /* MatchOdd */;
+			target = 3B2BE26E2EC4DC4A001DCF63 /* LiveOdds */;
 			targetProxy = 3B2BE2862EC4DC5C001DCF63 /* PBXContainerItemProxy */;
 		};
 		3B2BE2912EC4DC5C001DCF63 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3B2BE26E2EC4DC4A001DCF63 /* MatchOdd */;
+			target = 3B2BE26E2EC4DC4A001DCF63 /* LiveOdds */;
 			targetProxy = 3B2BE2902EC4DC5C001DCF63 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -313,7 +313,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.eaiccc.MatchOdd;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = LiveOdds;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -346,7 +346,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.eaiccc.MatchOdd;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = LiveOdds;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -574,7 +574,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3B2BE2982EC4DC5C001DCF63 /* Build configuration list for PBXNativeTarget "MatchOdd" */ = {
+		3B2BE2982EC4DC5C001DCF63 /* Build configuration list for PBXNativeTarget "LiveOdds" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3B2BE2992EC4DC5C001DCF63 /* Debug */,
