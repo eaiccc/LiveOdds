@@ -46,7 +46,7 @@ func loadInitialData() async {
 }
 ```
 
-**使用優勢**:
+**應用要點**:
 - **並行執行**: `async let` 同時執行多個網路請求
 - **線性程式碼**: 避免 callback 嵌套
 - **自動錯誤處理**: 統一的 try-catch 機制
@@ -124,7 +124,7 @@ func fetchMatches() async throws -> [Match] {
 @Published var connectionState: ConnectionState = .disconnected
 ```
 
-**使用優勢**:
+**應用要點**:
 - **自動 UI 更新**: @Published 屬性變更自動觸發重繪
 - **聲明式綁定**: ViewController 透過 sink 訂閱狀態變更
 - **記憶體安全**: AnyCancellable 自動管理訂閱
