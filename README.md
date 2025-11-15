@@ -4,6 +4,14 @@
 
 MatchOdd 專案採用**Swift Concurrency** 和 **Combine Framework** 的優勢，實現即時體育賠率顯示系統。
 
+## 展示影片
+
+### MatchOdds 功能展示
+![MatchOdds Demo](doc/MatchOdds.gif)
+
+### Memory Leak 測試
+![Memory Leak Test](doc/memoryleak.gif)
+
 ---
 
 ## 🔄 Swift Concurrency 使用場景
