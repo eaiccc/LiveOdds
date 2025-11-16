@@ -11,7 +11,9 @@ import Foundation
 
 // MARK: - MatchViewData Model
 
-struct MatchViewData: Hashable, Sendable {
+/// View data model for match display
+/// Must be nonisolated to work with UITableViewDiffableDataSource's Sendable requirements
+nonisolated struct MatchViewData: Hashable, Sendable {
     // MARK: - Match Properties
     
     let matchID: Int

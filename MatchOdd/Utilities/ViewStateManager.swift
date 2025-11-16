@@ -10,7 +10,7 @@
 
 import Foundation
 import UIKit
-
+import Combine
 // MARK: - View State Data
 
 /// Stores view state information for restoration with enhanced UITableView support

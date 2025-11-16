@@ -12,7 +12,11 @@ import UIKit
 import Combine
 import SnapKit
 
-enum Section: Hashable, Sendable {
+// MARK: - Section
+
+/// Section identifier for diffable data source
+/// Must be defined outside @MainActor context to avoid actor-isolated conformance issues
+nonisolated enum Section: Hashable, Sendable {
     case main
 }
 
@@ -316,7 +320,7 @@ final class MatchListViewController: BaseViewController {
 
         // Performance optimization: Apply without animations for 60 FPS target
         // This ensures smooth scrolling with 100+ matches and real-time updates
-        dataSource.apply(snapshot, animatingDifferences: false, completion: nil)
+        dataSource.apply(snapshot, animatingDifferences: false)
     }
     
     /// Updates the data source with new match data using UITableViewDiffableDataSource

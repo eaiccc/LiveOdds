@@ -9,6 +9,23 @@
 
 import Foundation
 
+// MARK: - Timer Box Helper
+
+/// Thread-safe wrapper for Timer to handle cleanup in deinit
+final class TimerBox: @unchecked Sendable {
+    nonisolated(unsafe) var timer: Timer?
+
+    @MainActor
+    func invalidate() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    deinit {
+        timer?.invalidate()
+    }
+}
+
 // MARK: - Match Repository Implementation
 
 /// Repository implementation providing data access layer with enhanced caching infrastructure
@@ -32,7 +49,7 @@ final class MatchRepository: MatchRepositoryProtocol, @unchecked Sendable {
     private var hasWarmedUp = false
     
     // Background update management
-    private var backgroundUpdateTimer: Timer?
+    private let timerBox = TimerBox()
     private var lastBackgroundUpdate: Date?
     
     // MARK: - Initialization
@@ -41,18 +58,18 @@ final class MatchRepository: MatchRepositoryProtocol, @unchecked Sendable {
     /// - Parameter networkService: The network service for data fetching operations
     init(networkService: NetworkServicing) {
         self.networkService = networkService
-        
+
         // Start cache warming in the background
         Task {
             await warmupCache()
         }
-        
+
         // Start background update timer
         startBackgroundUpdates()
     }
     
     deinit {
-        backgroundUpdateTimer?.invalidate()
+        // TimerBox will handle timer cleanup in its own deinit
     }
     
     // MARK: - Protocol Implementation
@@ -264,12 +281,14 @@ final class MatchRepository: MatchRepositoryProtocol, @unchecked Sendable {
     }
     
     // MARK: - Background Updates
-    
+
     /// Starts periodic background updates
     private func startBackgroundUpdates() {
-        backgroundUpdateTimer = Timer.scheduledTimer(withTimeInterval: Constants.Cache.backgroundUpdateInterval, repeats: true) { [weak self] _ in
-            Task {
-                await self?.performBackgroundUpdate()
+        Task { @MainActor in
+            timerBox.timer = Timer.scheduledTimer(withTimeInterval: Constants.Cache.backgroundUpdateInterval, repeats: true) { [weak self] _ in
+                Task {
+                    await self?.performBackgroundUpdate()
+                }
             }
         }
     }
@@ -325,12 +344,13 @@ final class MatchRepository: MatchRepositoryProtocol, @unchecked Sendable {
     /// Enables/disables background updates
     func setBackgroundUpdatesEnabled(_ enabled: Bool) {
         if enabled {
-            if backgroundUpdateTimer == nil {
+            if timerBox.timer == nil {
                 startBackgroundUpdates()
             }
         } else {
-            backgroundUpdateTimer?.invalidate()
-            backgroundUpdateTimer = nil
+            Task { @MainActor in
+                timerBox.invalidate()
+            }
         }
     }
 }

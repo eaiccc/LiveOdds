@@ -10,7 +10,7 @@
 import UIKit
 import QuartzCore
 import SnapKit
-
+import Combine
 // MARK: - FPSCounter
 
 /// A lightweight FPS counter that displays real-time frame rate information
