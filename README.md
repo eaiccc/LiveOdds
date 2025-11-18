@@ -13,6 +13,8 @@ LiveOdds 專案採用**Swift Concurrency** 和 **Combine Framework** 的優勢�
 ![Memory Leak Test](doc/memoryleak.gif)
 
 ---
+## 建置說明
+xCode26 須使用 xCode26分支版本建置
 
 ## Swift Concurrency 使用場景
 
