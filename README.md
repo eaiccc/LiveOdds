@@ -13,8 +13,10 @@ LiveOdds 專案採用**Swift Concurrency** 和 **Combine Framework** 的優勢�
 ![Memory Leak Test](doc/memoryleak.gif)
 
 ---
+## 建置說明
+xCode26 須使用 xCode26分支版本建置
 
-## 🔄 Swift Concurrency 使用場景
+## Swift Concurrency 使用場景
 
 ### 1. 資料載入與處理
 
@@ -77,42 +79,49 @@ actor OddsStore {
 - **自動隔離**: 編譯器強制執行安全性
 - **簡潔 API**: 無需手動鎖定機制
 
-### 3. Repository 層的快取管理
+### 3. Repository 層的 Actor 快取管理
 
 ```swift
-// MatchRepository.swift:65-97
-func fetchMatches() async throws -> [Match] {
-    let shouldFetchFromNetwork = await withCheckedContinuation { continuation in
-        cacheQueue.async {
-            // 檢查快取有效性
-            if let timestamp = self.cacheTimestamp {
-                let isValid = Date().timeIntervalSince(timestamp) < Constants.Cache.expirationInterval
-                continuation.resume(returning: !isValid)
-            } else {
-                continuation.resume(returning: true)
-            }
+// MatchRepository.swift:60-84
+actor MatchRepository: MatchRepositoryProtocol {
+    private var cachedMatches: [Match] = []
+    private var cachedOdds: [Odds] = []
+    private var cacheTimestamp: Date?
+    
+    func fetchMatches() async throws -> [Match] {
+        // Actor 內部直接檢查快取有效性
+        let shouldFetchFromNetwork = checkCacheValidityForMatches()
+        
+        if !shouldFetchFromNetwork {
+            statistics.recordCacheHit()
+            return cachedMatches  // Actor 保證線程安全
         }
+        
+        statistics.recordCacheMiss()
+        
+        // 網路請求
+        let matches: [Match] = try await networkService.request(.matches)
+        
+        // Actor 內部安全更新快取
+        updateMatchesCache(matches)
+        
+        return matches
     }
     
-    // 使用 barrier 確保寫入安全
-    await withCheckedContinuation { continuation in
-        cacheQueue.async(flags: .barrier) {
-            self.cachedMatches = matches
-            self.cacheTimestamp = Date()
-            continuation.resume()
-        }
+    private func updateMatchesCache(_ matches: [Match]) {
+        cachedMatches = matches
+        cacheTimestamp = Date()
     }
 }
 ```
 
 **使用場景**:
-- **快取策略**: 智能快取與網路請求協調
-- **DispatchQueue 整合**: 與 async/await 無縫銜接
-- **資料一致性**: barrier 確保寫入排他性
+- **Actor 隔離**: 自動線程安全保護，無需手動鎖定
+- **直接存取**: Actor 內部直接操作屬性，無需 barrier 機制
 
 ---
 
-## 🔀 Combine Framework 使用場景
+## Combine Framework 使用場景
 
 ### 1. UI 狀態管理
 
@@ -195,7 +204,7 @@ private func setupBindings() {
 
 ---
 
-## 🛡 Thread-Safe 資料存取機制
+##  Thread-Safe 資料存取機制
 
 ### 1. @MainActor 隔離
 
@@ -256,29 +265,41 @@ struct OddsUpdate: Codable, Sendable {
 - **不變性設計**: let 屬性確保資料穩定
 - **編譯器驗證**: Sendable 自動檢查跨執行緒安全
 
-### 4. DispatchQueue 併發控制
+### 4. Actor 併發控制
 
 ```swift
-// MatchRepository.swift:25
-private let cacheQueue = DispatchQueue(label: "com.matchodd.repository.cache", attributes: .concurrent)
-
-// 讀取操作 - 併發執行
-cacheQueue.async {
-    continuation.resume(returning: self.cachedMatches)
-}
-
-// 寫入操作 - 排他執行
-cacheQueue.async(flags: .barrier) {
-    self.cachedMatches = matches
-    self.cacheTimestamp = Date()
-    continuation.resume()
+// MatchRepository.swift (Actor Implementation)
+actor MatchRepository: MatchRepositoryProtocol {
+    private var cachedMatches: [Match] = []
+    private var cachedOdds: [Odds] = []
+    private var cacheTimestamp: Date?
+    
+    // 所有方法自動序列化執行，保證線程安全
+    func fetchMatches() async throws -> [Match] {
+        // 直接存取屬性，無需額外同步機制
+        let shouldFetch = checkCacheValidityForMatches()
+        // ...
+    }
+    
+    func refreshCache() async throws {
+        cacheTimestamp = nil  // 直接修改，Actor 保證安全
+        _ = try await fetchMatches()
+        _ = try await fetchOdds()
+    }
+    
+    func clearCache() async {
+        cachedMatches.removeAll()  // 原子操作
+        cachedOdds.removeAll()
+        cacheTimestamp = nil
+        hasWarmedUp = false
+        statistics.reset()
+    }
 }
 ```
 
-**併發模式**:
-- **Reader-Writer 模式**: 併發讀取，排他寫入
-- **async/await 整合**: withCheckedContinuation 橋接
-- **效能優化**: 避免不必要的執行緒阻塞
+**Actor 併發模式**:
+- **自動序列化**: Actor 內部方法自動序列化執行
+- **消除競態條件**: 編譯器保證無資料競爭
 
 ---
 
@@ -362,7 +383,7 @@ viewModel.$error
 
 ---
 
-## 🎯 架構整合模式
+## 架構整合模式
 
 ### 資料流向圖
 
@@ -383,34 +404,23 @@ UITableView (DiffableDataSource)
 ```
 UI Layer (@MainActor)
     ↕ async/await calls
-Actor Layer (OddsStore)
+Actor Layer (OddsStore + MatchRepository)
     ↕ Sendable data
-Repository Layer (DispatchQueue + Cache)
-    ↕ Network requests
 Network Layer (async/await)
+```
+
+### Actor 系統整合
+
+```
+MatchListViewModel (@MainActor)
+    ↓ await repository.fetchMatches()
+MatchRepository (Actor) 
+    ↓ actor-isolated cache
+Private Storage (cachedMatches, cachedOdds)
+    ↓ await networkService.request()
+NetworkService (async/await)
 ```
 
 ---
 
-## 🚀 效能與安全總結
-
-### ✅ Swift Concurrency 優勢
-- **結構化併發**: 自動任務取消和錯誤傳播
-- **Actor 隔離**: 編譯器保證的執行緒安全
-- **並行處理**: async let 提升資料載入效能
-
-### ✅ Combine Framework 優勢
-- **響應式 UI**: @Published 自動觸發更新
-- **事件流處理**: Subject 模式處理即時資料
-- **記憶體管理**: AnyCancellable 自動清理
-
-### ✅ Thread-Safe 保證
-- **@MainActor**: UI 操作強制主執行緒執行
-- **Actor 系統**: 共享狀態自動保護
-- **Sendable 協議**: 跨執行緒資料安全驗證
-
-### ✅ UI-ViewModel 綁定
-- **宣告式更新**: @Published + sink 自動同步
-- **效能優化**: DiffableDataSource 高效更新
-- **狀態持久化**: ViewStateManager 保存使用者體驗
 

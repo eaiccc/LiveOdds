@@ -9,14 +9,13 @@
 //
 
 import Foundation
-import CoreGraphics
 
 // MARK: - Application Constants
 
-enum Constants {
+struct Constants: Sendable {
     // MARK: - API Configuration
-    
-    enum API {
+
+    struct API: Sendable {
         /// Base URL for API endpoints
         static let baseURL: String = "https://api.example.com"
         
@@ -30,35 +29,23 @@ enum Constants {
         static let wsURL: String = "wss://api.example.com/ws"
     }
     
-    // MARK: - UI Configuration
-    
-    enum UI {
-        /// Card corner radius in points
-        static let cardCornerRadius: CGFloat = 12
-        
-        /// Card spacing in points
-        static let cardSpacing: CGFloat = 12
-        
-        /// Standard animation duration in seconds
-        static let animationDuration: TimeInterval = 0.3
-    }
-    
     // MARK: - Cache Configuration
-    
-    enum Cache {
+
+    struct Cache: Sendable {
         /// Cache expiration interval in seconds (5 minutes)
-        static let expirationInterval: TimeInterval = 300
+        static let expirationInterval: Double = 300.0
         
         /// Quick cache refresh interval in seconds (30 seconds)
-        static let quickRefreshInterval: TimeInterval = 30
+        static let quickRefreshInterval: Double = 30
         
         /// Background update interval in seconds (2 minutes)
-        static let backgroundUpdateInterval: TimeInterval = 120
+        static let backgroundUpdateInterval: Double = 120
         
         /// Maximum cache age before forced refresh (10 minutes)
-        static let maxCacheAge: TimeInterval = 600
+        static let maxCacheAge: Double = 600.0
         
         /// Number of items to keep in memory cache
         static let maxCachedItems = 100
     }
 }
+

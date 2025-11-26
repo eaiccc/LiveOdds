@@ -8,23 +8,22 @@
 //
 
 import Foundation
-import Combine
 
 // MARK: - Cache Statistics
 
-/// Monitors and tracks cache performance metrics  
-final class CacheStatistics: ObservableObject {
-    
+/// Monitors and tracks cache performance metrics
+actor CacheStatistics {
+
     // MARK: - Properties
-    
+
     /// Total number of cache requests
-    @Published private(set) var totalRequests: Int = 0
-    
+    private(set) var totalRequests: Int = 0
+
     /// Number of cache hits
-    @Published private(set) var cacheHits: Int = 0
-    
+    private(set) var cacheHits: Int = 0
+
     /// Number of cache misses
-    @Published private(set) var cacheMisses: Int = 0
+    private(set) var cacheMisses: Int = 0
     
     /// Cache hit rate as percentage
     var hitRate: Double {
@@ -33,11 +32,11 @@ final class CacheStatistics: ObservableObject {
     }
     
     /// Last cache update timestamp
-    @Published private(set) var lastCacheUpdate: Date?
-    
+    private(set) var lastCacheUpdate: Date?
+
     /// Cache size information
-    @Published private(set) var cachedMatchesCount: Int = 0
-    @Published private(set) var cachedOddsCount: Int = 0
+    private(set) var cachedMatchesCount: Int = 0
+    private(set) var cachedOddsCount: Int = 0
     
     // MARK: - Public Methods
     
