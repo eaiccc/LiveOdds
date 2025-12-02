@@ -322,12 +322,12 @@ final class MatchListViewController: BaseViewController {
     /// Updates the data source with new match data using UITableViewDiffableDataSource
     private func updateDataSource(with matches: [MatchViewData]) {
         // Ensure updates happen on main thread for UI safety
-        guard Thread.isMainThread else {
-            DispatchQueue.main.async { [weak self] in
-                self?.updateDataSource(with: matches)
-            }
-            return
-        }
+//        guard Thread.isMainThread else {
+//            DispatchQueue.main.async { [weak self] in
+//                self?.updateDataSource(with: matches)
+//            }
+//            return
+//        }
         
         // Apply snapshot using our optimized method
         applySnapshot(matches)

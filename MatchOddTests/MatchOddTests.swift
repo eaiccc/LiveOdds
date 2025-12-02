@@ -6,7 +6,7 @@
 //
 
 import Testing
-@testable import MatchOdd
+@testable import LiveOdds
 
 struct MatchOddTests {
 

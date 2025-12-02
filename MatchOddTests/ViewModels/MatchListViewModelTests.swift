@@ -11,7 +11,7 @@
 import Testing
 import Combine
 import Foundation
-@testable import MatchOdd
+@testable import LiveOdds
 
 // MARK: - MatchListViewModelTests
 

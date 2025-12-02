@@ -10,7 +10,7 @@
 
 import Foundation
 import Combine
-@testable import MatchOdd
+@testable import LiveOdds
 
 // MARK: - MockOddsStreamManager
 
